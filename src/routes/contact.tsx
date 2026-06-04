@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
-import { Phone, Mail, MapPin, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Send, Loader2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -17,17 +19,43 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
-  const [sent, setSent] = useState(false);
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
-    const subject = encodeURIComponent(`Inquiry from ${data.get("name")} — ${data.get("company") || "Welten Brukke"}`);
-    const body = encodeURIComponent(
-      `Name: ${data.get("name")}\nCompany: ${data.get("company")}\nEmail: ${data.get("email")}\nPhone: ${data.get("phone")}\nIndustry: ${data.get("industry")}\n\nMessage:\n${data.get("message")}`
-    );
-    window.location.href = `mailto:weltenbrukkeenterprises@gmail.com?subject=${subject}&body=${body}`;
-    setSent(true);
+
+    const payload = {
+      name: String(data.get("name") || "").trim(),
+      company: String(data.get("company") || "").trim() || null,
+      email: String(data.get("email") || "").trim(),
+      phone: String(data.get("phone") || "").trim() || null,
+      industry: String(data.get("industry") || "").trim() || null,
+      message: String(data.get("message") || "").trim(),
+    };
+
+    if (!payload.name || !payload.email || !payload.message) {
+      toast.error("Please fill in name, email and message.");
+      return;
+    }
+    if (payload.name.length > 200 || payload.email.length > 320 || payload.message.length > 5000) {
+      toast.error("One of the fields exceeds the allowed length.");
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.from("contact_submissions").insert(payload);
+    setLoading(false);
+
+    if (error) {
+      console.error(error);
+      toast.error("Could not send your inquiry. Please try again or email us directly.");
+      return;
+    }
+
+    toast.success("Thank you! Your inquiry has been received. We'll be in touch shortly.");
+    form.reset();
   };
 
   return (
@@ -96,12 +124,12 @@ function ContactPage() {
           </div>
           <div>
             <label className="block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Message</label>
-            <textarea name="message" rows={5} required placeholder="Tell us about your requirement — quantities, formats, timelines…" className="w-full bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:border-gold resize-none" />
+            <textarea name="message" rows={5} required maxLength={5000} placeholder="Tell us about your requirement — quantities, formats, timelines…" className="w-full bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:border-gold resize-none" />
           </div>
-          <button type="submit" className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground text-sm uppercase tracking-[0.2em] hover:bg-[var(--emerald-deep)] transition-colors">
-            <Send size={16}/> Send Inquiry
+          <button type="submit" disabled={loading} className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground text-sm uppercase tracking-[0.2em] hover:bg-[var(--emerald-deep)] transition-colors disabled:opacity-60">
+            {loading ? <><Loader2 size={16} className="animate-spin"/> Sending…</> : <><Send size={16}/> Send Inquiry</>}
           </button>
-          {sent && <p className="text-sm text-[var(--emerald-deep)]">Your email client should now open with the inquiry pre-filled.</p>}
+          <p className="text-xs text-muted-foreground">Your inquiry is securely stored and our team is notified. We typically respond within 1 business day.</p>
         </form>
       </section>
     </SiteLayout>
@@ -112,7 +140,7 @@ function Field({ label, name, type = "text", required }: { label: string; name: 
   return (
     <div>
       <label className="block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">{label}{required && <span className="text-gold">*</span>}</label>
-      <input name={name} type={type} required={required} className="w-full bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+      <input name={name} type={type} required={required} maxLength={320} className="w-full bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:border-gold" />
     </div>
   );
 }
