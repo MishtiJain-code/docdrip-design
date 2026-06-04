@@ -84,6 +84,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Welten Brukke Enterprises" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Welten Brukke Enterprises — Premium Glassware Sourcing" },
+      { name: "twitter:title", content: "Welten Brukke Enterprises — Premium Glassware Sourcing" },
+      { property: "og:description", content: "A bridge to premium glassware solutions for the liquor, perfume and food industries. Backed by a 57-year industry legacy. ISO 9001:2015 certified." },
+      { name: "twitter:description", content: "A bridge to premium glassware solutions for the liquor, perfume and food industries. Backed by a 57-year industry legacy. ISO 9001:2015 certified." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/40ee9791-7199-4d37-82d1-1e84003825fe/id-preview-4c5f4bdd--2140850c-1b72-4b1f-afe1-74d173aa502a.lovable.app-1780597972173.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/40ee9791-7199-4d37-82d1-1e84003825fe/id-preview-4c5f4bdd--2140850c-1b72-4b1f-afe1-74d173aa502a.lovable.app-1780597972173.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
