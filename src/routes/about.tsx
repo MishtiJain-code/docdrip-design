@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
-import factory from "@/assets/factory.jpg";
+import factoryAsset from "@/assets/glass-factory.jpg.asset.json";
+const factory = factoryAsset.url;
 
 export const Route = createFileRoute("/about")({
   head: () => ({

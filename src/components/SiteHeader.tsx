@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/welten-brukke-logo.png.asset.json";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -15,14 +16,14 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 bg-background/85 backdrop-blur border-b border-border">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 h-20 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-sm gradient-emerald flex items-center justify-center">
-            <span className="font-serif text-gold text-xl leading-none">W</span>
-          </div>
-          <div className="leading-tight">
-            <div className="font-serif text-lg tracking-wide">Welten Brukke</div>
-            <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Enterprises</div>
-          </div>
+        <Link to="/" className="flex items-center gap-3 group shrink-0" aria-label="Welten Brukke — Home">
+          <img
+            src={logo.url}
+            alt="Welten Brukke — Global Connections, Glass Ware"
+            width={520}
+            height={520}
+            className="h-12 md:h-14 w-auto object-contain"
+          />
         </Link>
         <nav className="hidden md:flex items-center gap-9">
           {nav.map((n) => (

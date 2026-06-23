@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import hero from "@/assets/hero-glassware.jpg";
-import factory from "@/assets/factory.jpg";
+import factoryAsset from "@/assets/glass-factory.jpg.asset.json";
+const factory = factoryAsset.url;
 import catPerfume from "@/assets/cat-perfume.jpg";
 import catLiquor from "@/assets/cat-liquor.jpg";
 import catFood from "@/assets/cat-food.jpg";
