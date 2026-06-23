@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHero } from "@/components/SiteLayout";
 import { Phone, Mail, MapPin, Send, Loader2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/contact")({
@@ -45,17 +44,24 @@ function ContactPage() {
     }
 
     setLoading(true);
-    const { error } = await supabase.from("contact_submissions").insert(payload);
-    setLoading(false);
+    try {
+      const response = await fetch("https://formspree.io/f/xvzjgqll", {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      setLoading(false);
 
-    if (error) {
-      console.error(error);
-      toast.error("Could not send your inquiry. Please try again or email us directly.");
-      return;
+      if (response.ok) {
+        toast.success("Thank you for your enquiry. We will contact you soon.");
+        form.reset();
+      } else {
+        toast.error("Could not send your enquiry. Please try again or email us directly.");
+      }
+    } catch {
+      setLoading(false);
+      toast.error("Could not send your enquiry. Please try again or email us directly.");
     }
-
-    toast.success("Thank you! Your inquiry has been received. We'll be in touch shortly.");
-    form.reset();
   };
 
   return (
@@ -129,7 +135,7 @@ function ContactPage() {
           <button type="submit" disabled={loading} className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground text-sm uppercase tracking-[0.2em] hover:bg-[var(--emerald-deep)] transition-colors disabled:opacity-60">
             {loading ? <><Loader2 size={16} className="animate-spin"/> Sending…</> : <><Send size={16}/> Send Inquiry</>}
           </button>
-          <p className="text-xs text-muted-foreground">Your inquiry is securely stored and our team is notified. We typically respond within 1 business day.</p>
+          <p className="text-xs text-muted-foreground">Your inquiry is sent directly to our team. We typically respond within 1 business day.</p>
         </form>
       </section>
     </SiteLayout>
