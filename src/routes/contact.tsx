@@ -135,7 +135,7 @@ function ContactPage() {
           <button type="submit" disabled={loading} className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground text-sm uppercase tracking-[0.2em] hover:bg-[var(--emerald-deep)] transition-colors disabled:opacity-60">
             {loading ? <><Loader2 size={16} className="animate-spin"/> Sending…</> : <><Send size={16}/> Send Inquiry</>}
           </button>
-          <p className="text-xs text-muted-foreground">Your inquiry is securely stored and our team is notified. We typically respond within 1 business day.</p>
+          <p className="text-xs text-muted-foreground">Your inquiry is sent directly to our team. We typically respond within 1 business day.</p>
         </form>
       </section>
     </SiteLayout>
