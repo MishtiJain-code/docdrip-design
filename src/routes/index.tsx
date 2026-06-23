@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import hero from "@/assets/hero-glassware.jpg";
-import factory from "@/assets/factory.jpg";
+import factoryAsset from "@/assets/glass-factory.jpg.asset.json";
+const factory = factoryAsset.url;
 import catPerfume from "@/assets/cat-perfume.jpg";
 import catLiquor from "@/assets/cat-liquor.jpg";
 import catFood from "@/assets/cat-food.jpg";
@@ -104,15 +105,20 @@ function Home() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((c) => (
-              <article key={c.title} className="group bg-background border border-border overflow-hidden">
+              <Link
+                key={c.title}
+                to="/products"
+                className="group bg-background border border-border overflow-hidden block focus:outline-none focus:ring-2 focus:ring-gold"
+                aria-label={`View ${c.title} products`}
+              >
                 <div className="aspect-[4/5] overflow-hidden">
                   <img src={c.img} alt={c.title} loading="lazy" width={800} height={1000} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="p-6">
-                  <h3 className="font-serif text-xl">{c.title}</h3>
+                  <h3 className="font-serif text-xl group-hover:text-[var(--emerald-deep)] transition-colors">{c.title}</h3>
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
