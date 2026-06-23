@@ -149,21 +149,6 @@ function Home() {
         </div>
       </section>
 
-      {/* CLIENTS */}
-      <section className="bg-cream py-20 border-y border-border">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 text-center">
-          <div className="text-xs uppercase tracking-[0.3em] text-gold mb-4">Trusted By Industry Leaders</div>
-          <h2 className="font-serif text-3xl md:text-4xl mb-12">Delivering for leading national and global brands</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 items-center">
-            {["Organic India", "Nature's Pride", "Bhagat Halwai", "The Coco Station"].map((b) => (
-              <div key={b} className="font-serif text-2xl text-[var(--emerald-deep)]/60 hover:text-[var(--emerald-deep)] transition-colors">
-                {b}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="gradient-emerald text-[var(--cream)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-24 text-center">
